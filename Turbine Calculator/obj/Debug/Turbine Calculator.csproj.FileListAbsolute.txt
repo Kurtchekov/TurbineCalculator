@@ -1,0 +1,9 @@
+d:\projetos\Turbine Calculator\Turbine Calculator\bin\Debug\Turbine Calculator.exe.config
+d:\projetos\Turbine Calculator\Turbine Calculator\bin\Debug\Turbine Calculator.exe
+d:\projetos\Turbine Calculator\Turbine Calculator\bin\Debug\Turbine Calculator.pdb
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine Calculator.csprojResolveAssemblyReference.cache
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine_Calculator.Properties.Resources.resources
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine Calculator.csproj.GenerateResource.Cache
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine Calculator.exe
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine Calculator.pdb
+d:\projetos\Turbine Calculator\Turbine Calculator\obj\Debug\Turbine_Calculator.TurbineCalculator.resources
