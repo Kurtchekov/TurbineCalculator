@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Turbine_Calculator {
     public partial class TurbineCalculator : Form {
+        
         public TurbineCalculator() {
             InitializeComponent();
             fuelList.SelectedIndex = 0;
+            overlay = new Overlay();
+            overlay.Abort_Clicked += new EventHandler(Abort);
+            toolTip.SetToolTip(runBTN, "Retrieves the optimal turbine configuration for the chosen length");
+            toolTip.SetToolTip(runAllBTN, "Retrieves the optimal turbine configuration amongst all lengths up to the chosen number. Can be pretty slow!!!");
         }
 
-        public static double fuelExpansion = 4;
-        public static double rfpermb = 16;
-        public static int segments = 20;
+        public static double fuelExpansion;
+        public static double rfpermb;
+        public static int segments;
         public static double[] targets;
 
         public static Blade stator = new Blade(0, "stator", .75, -1, true);
@@ -30,32 +37,17 @@ namespace Turbine_Calculator {
         public static double bestEfficiency;
         public static double bestExpansion;
         public static int bladesAvailable;
+        public static double bestPossibleEfficiency;
+        public static Stopwatch stopwatch = new Stopwatch();
+        public static CancellationTokenSource cancel;
+        public static Overlay overlay;
+        public static int bestLengthOfAll;
 
-        private void runBTN_Click(object sender, EventArgs e) {
-            Setup();
-            targets = new double[segments];
-            //output.Text += "target values for each segment:\r\n";
-            for (int segment = 0; segment < segments; segment++) {
-                targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / segments));
-                //output.Text += segment + ": " + targets[segment] + "\r\n";
-            }
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            Calculate();
-            output.Text += "Best combination for fuel expansion " + fuelExpansion + " and " + segments + " blocks long shaft:\r\n";
-            string list = "";
-            for (int x = 0; x < segments; x++) list += bestBlades[x].name + ", ";
-            list = list.Substring(0, list.Length - 2);
-            output.Text += list + "\r\n";
-            output.Text += (fuelExpansion * bestExpansion).ToString("P") +
-                " [" + fuelExpansion + " x " + bestExpansion.ToString("P") + "]\r\n";
-            output.Text += "RF per mb (coil efficiency not taken into account!): " + rfpermb * bestEfficiency + "\r\n";
-            output.Text += "Time taken: " + stopwatch.ElapsedMilliseconds + " milliseconds\r\n";
+        private void Abort(object sender, EventArgs e) {
+            if (cancel != null) cancel.Cancel();
         }
 
         public void Setup() {
-            bestExpansion = 0;
-            bestEfficiency = 0;
             blades.Clear();
             if (statorCheck.Checked) blades.Add(stator);
             if (steelCheck.Checked) blades.Add(steel);
@@ -84,18 +76,52 @@ namespace Turbine_Calculator {
             output.Text = "";
         }
 
-        public static void Calculate() {
-            currentBlades = new Blade[segments];
-            bestBlades = new Blade[segments];
-            for (int blade = 0; blade < segments; blade++) bestBlades[blade] = currentBlades[blade] = blades[0];
-            currentCoefficients = new double[segments];
-            currentEfficiencySum = new double[segments];
-            rotors = new int[segments];
-            bladesAvailable = blades.Count;
-            recursiveCheck(0);
+        public void Run(object sender, EventArgs e) {
+            EnableGUI(false);
+            Setup();
+            stopwatch.Reset();
+            cancel = new CancellationTokenSource();
+            Task t = Task.Factory.StartNew(() => CalculateSingle(segments), cancel.Token).ContinueWith(task => DisplayResults(), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        public static bool checkLowerBound(int depth, Blade currentStator) {
+        private void RunAll(object sender, EventArgs e) {
+            EnableGUI(false);
+            cancel = new CancellationTokenSource();
+            CancellationToken cancelToken = cancel.Token;
+            Setup();
+            stopwatch.Reset();
+            Task previousTask = Task.Factory.StartNew(() => CalculateSingle(1), cancelToken);
+            for (int length = 2; length <= segments; length++) {
+                previousTask = previousTask.ContinueWith((task,len) => CalculateNext((int)len), length, cancelToken);
+            }
+
+            previousTask.ContinueWith(task => DisplayResults(), TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        public void EnableGUI(bool shouldEnable) {
+            if (!shouldEnable) {
+                if (!Controls.Contains(overlay)) Controls.Add(overlay);
+                overlay.BringToFront();
+            } else if (Controls.Contains(overlay)) Controls.Remove(overlay);
+        }
+
+        public void DisplayResults() {
+            if (cancel.IsCancellationRequested) output.Text = "Operation Aborted!";
+            else {
+                output.Text += "Best combination for fuel expansion " + fuelExpansion + " and " + bestLengthOfAll + " blocks long shaft:\r\n";
+                string list = "";
+                for (int x = 0; x < bestLengthOfAll; x++) list += bestBlades[x].name + ", ";
+                list = list.Substring(0, list.Length - 2);
+                output.Text += list + "\r\n";
+                output.Text += (fuelExpansion * bestExpansion).ToString("P") +
+                    " [" + fuelExpansion + " x " + bestExpansion.ToString("P") + "]\r\n";
+                output.Text += "RF per mb (coil efficiency not taken into account!): " + rfpermb * bestEfficiency + "\r\n";
+                output.Text += "Time taken: " + stopwatch.ElapsedMilliseconds + " milliseconds\r\n";
+            }
+            EnableGUI(true);
+        }
+
+        public static bool IsExpansionHighEnough(int depth, Blade currentStator) {
             double bestCurrentEfficiency = 0;
             double bestLaterEfficiency = 0;
             for (int blade = 0; blade < bladesAvailable; blade++) {
@@ -113,7 +139,65 @@ namespace Turbine_Calculator {
             return bestLaterEfficiency > bestCurrentEfficiency;
         }
 
-        public static void recursiveCheck(int depth) {
+        public static bool IsEfficiencyGoodEnough(int depth, int length) {
+            int remainingSegments = length - depth - 1;
+            return (currentEfficiencySum[depth] + (bestPossibleEfficiency * remainingSegments)) / 
+                (rotors[depth] + remainingSegments) > bestEfficiency;
+        }
+
+        public void CalculateSingle(int length) {
+            ResetVariables(length);
+            stopwatch.Start();
+            RecursiveCheck(0, length);
+            stopwatch.Stop();
+        }
+
+        public void CalculateNext(int length) {
+            SoftResetVariables(length);
+            stopwatch.Start();
+            RecursiveCheck(0, length);
+            stopwatch.Stop();
+        }
+
+        public void SoftResetVariables(int length) {
+            targets = new double[length];
+            for (int segment = 0; segment < length; segment++) {
+                targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / length));
+            }
+            currentBlades = new Blade[length];
+            for (int pos = 0; pos < length; pos++) currentBlades[pos] = blades[0];
+            Blade[] temp = new Blade[length];
+            for (int pos = 0; pos < bestBlades.Length; pos++) temp[pos] = bestBlades[pos];
+            bestBlades = temp;
+            currentCoefficients = new double[length];
+            currentEfficiencySum = new double[length];
+            rotors = new int[length];
+        }
+
+        public void ResetVariables(int length) {
+            bestExpansion = 0;
+            bestEfficiency = 0;
+            bestLengthOfAll = 0;
+            targets = new double[length];
+            for (int segment = 0; segment < length; segment++) {
+                targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / length));
+            }
+            currentBlades = new Blade[length];
+            bestBlades = new Blade[length];
+            for (int pos = 0; pos < length; pos++)  bestBlades[pos] = currentBlades[pos] = blades[0];
+            currentCoefficients = new double[length];
+            currentEfficiencySum = new double[length];
+            rotors = new int[length];
+            bladesAvailable = blades.Count;
+            bestPossibleEfficiency = 0;
+            for (int blade = 0; blade < bladesAvailable; blade++) {
+                if (blades[blade].isStator) continue;
+                if (blades[blade].efficiency > bestPossibleEfficiency) bestPossibleEfficiency = blades[blade].efficiency;
+            }
+        }
+
+        public static void RecursiveCheck(int depth, int length) {
+            if (cancel.IsCancellationRequested) return;
             for (int blade = 0; blade < bladesAvailable; blade++) {
                 Blade actualBlade = blades[blade];
                 currentBlades[depth] = actualBlade;
@@ -138,13 +222,15 @@ namespace Turbine_Calculator {
                         rotors[depth] = rotors[depth - 1] + 1;
                     } else {
                         if (targets[depth] > currentCoefficients[depth - 1] &&
-                            depth + 1 < segments) if (!checkLowerBound(depth, actualBlade)) continue;
+                            depth + 1 < length) if (!IsExpansionHighEnough(depth, actualBlade)) continue;
                         rotors[depth] = rotors[depth - 1];
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1];
                     }
                 }
 
-                if (depth + 1 < segments) recursiveCheck(depth + 1);
+                if (!IsEfficiencyGoodEnough(depth, length)) continue;
+
+                if (depth + 1 < length) RecursiveCheck(depth + 1, length);
                 else { //last segment
                     double averageEfficiency = currentEfficiencySum[depth] / rotors[depth];
                     double expansionCoefficient = Math.Min(currentCoefficients[depth], fuelExpansion) / Math.Max(currentCoefficients[depth], fuelExpansion);
@@ -152,9 +238,29 @@ namespace Turbine_Calculator {
                     if (finalEfficiency > bestEfficiency) {
                         bestEfficiency = finalEfficiency;
                         bestExpansion = expansionCoefficient;
-                        for (int x = 0; x < segments; x++) bestBlades[x] = currentBlades[x];
+                        bestLengthOfAll = length;
+                        for (int x = 0; x < length; x++) bestBlades[x] = currentBlades[x];
                     }
                 }
+            }
+        }
+
+        void CheckCheckboxes(object sender, EventArgs e) {
+            int checkedOnes = 0;
+            if (statorCheck.Checked) checkedOnes++;
+            if (steelCheck.Checked) checkedOnes++;
+            if (extremeCheck.Checked) checkedOnes++;
+            if (sicCheck.Checked) checkedOnes++;
+            if (checkedOnes == 1) {
+                statorCheck.Enabled = !statorCheck.Checked;
+                steelCheck.Enabled = !steelCheck.Checked;
+                extremeCheck.Enabled = !extremeCheck.Checked;
+                sicCheck.Enabled = !sicCheck.Checked;
+            } else {
+                statorCheck.Enabled = true;
+                steelCheck.Enabled = true;
+                extremeCheck.Enabled = true;
+                sicCheck.Enabled = true;
             }
         }
     }

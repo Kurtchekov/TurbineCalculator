@@ -23,15 +23,17 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TurbineCalculator));
+            this.SettingsBox1 = new System.Windows.Forms.GroupBox();
             this.sicCheck = new System.Windows.Forms.CheckBox();
             this.extremeCheck = new System.Windows.Forms.CheckBox();
             this.steelCheck = new System.Windows.Forms.CheckBox();
             this.statorCheck = new System.Windows.Forms.CheckBox();
             this.lengthInput = new System.Windows.Forms.NumericUpDown();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.SettingsBox3 = new System.Windows.Forms.GroupBox();
             this.fuelList = new System.Windows.Forms.ListBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.SettingsBox2 = new System.Windows.Forms.GroupBox();
             this.fuelMode = new System.Windows.Forms.TabControl();
             this.autoMode = new System.Windows.Forms.TabPage();
             this.manualMode = new System.Windows.Forms.TabPage();
@@ -41,10 +43,12 @@
             this.expansionInput = new System.Windows.Forms.NumericUpDown();
             this.runBTN = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.runAllBTN = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.SettingsBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.SettingsBox3.SuspendLayout();
+            this.SettingsBox2.SuspendLayout();
             this.fuelMode.SuspendLayout();
             this.autoMode.SuspendLayout();
             this.manualMode.SuspendLayout();
@@ -54,18 +58,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // SettingsBox1
             // 
-            this.groupBox1.Controls.Add(this.sicCheck);
-            this.groupBox1.Controls.Add(this.extremeCheck);
-            this.groupBox1.Controls.Add(this.steelCheck);
-            this.groupBox1.Controls.Add(this.statorCheck);
-            this.groupBox1.Location = new System.Drawing.Point(13, 13);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(134, 116);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Blade Types to be used";
+            this.SettingsBox1.Controls.Add(this.sicCheck);
+            this.SettingsBox1.Controls.Add(this.extremeCheck);
+            this.SettingsBox1.Controls.Add(this.steelCheck);
+            this.SettingsBox1.Controls.Add(this.statorCheck);
+            this.SettingsBox1.Location = new System.Drawing.Point(13, 13);
+            this.SettingsBox1.Name = "SettingsBox1";
+            this.SettingsBox1.Size = new System.Drawing.Size(134, 116);
+            this.SettingsBox1.TabIndex = 0;
+            this.SettingsBox1.TabStop = false;
+            this.SettingsBox1.Text = "Blade Types to be used";
             // 
             // sicCheck
             // 
@@ -78,6 +82,7 @@
             this.sicCheck.TabIndex = 3;
             this.sicCheck.Text = "SiC Rotor";
             this.sicCheck.UseVisualStyleBackColor = true;
+            this.sicCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
             // 
             // extremeCheck
             // 
@@ -90,6 +95,7 @@
             this.extremeCheck.TabIndex = 2;
             this.extremeCheck.Text = "Extreme Rotor";
             this.extremeCheck.UseVisualStyleBackColor = true;
+            this.extremeCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
             // 
             // steelCheck
             // 
@@ -102,6 +108,7 @@
             this.steelCheck.TabIndex = 1;
             this.steelCheck.Text = "Steel Rotor";
             this.steelCheck.UseVisualStyleBackColor = true;
+            this.steelCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
             // 
             // statorCheck
             // 
@@ -114,10 +121,16 @@
             this.statorCheck.TabIndex = 0;
             this.statorCheck.Text = "Stator";
             this.statorCheck.UseVisualStyleBackColor = true;
+            this.statorCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
             // 
             // lengthInput
             // 
             this.lengthInput.Location = new System.Drawing.Point(6, 19);
+            this.lengthInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.lengthInput.Name = "lengthInput";
             this.lengthInput.Size = new System.Drawing.Size(92, 20);
             this.lengthInput.TabIndex = 1;
@@ -127,15 +140,15 @@
             0,
             0});
             // 
-            // groupBox2
+            // SettingsBox3
             // 
-            this.groupBox2.Controls.Add(this.lengthInput);
-            this.groupBox2.Location = new System.Drawing.Point(362, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(104, 48);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Shaft Length";
+            this.SettingsBox3.Controls.Add(this.lengthInput);
+            this.SettingsBox3.Location = new System.Drawing.Point(362, 12);
+            this.SettingsBox3.Name = "SettingsBox3";
+            this.SettingsBox3.Size = new System.Drawing.Size(104, 48);
+            this.SettingsBox3.TabIndex = 2;
+            this.SettingsBox3.TabStop = false;
+            this.SettingsBox3.Text = "Shaft Length";
             // 
             // fuelList
             // 
@@ -150,15 +163,15 @@
             this.fuelList.Size = new System.Drawing.Size(177, 52);
             this.fuelList.TabIndex = 3;
             // 
-            // groupBox3
+            // SettingsBox2
             // 
-            this.groupBox3.Controls.Add(this.fuelMode);
-            this.groupBox3.Location = new System.Drawing.Point(153, 12);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(203, 117);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Fuel";
+            this.SettingsBox2.Controls.Add(this.fuelMode);
+            this.SettingsBox2.Location = new System.Drawing.Point(153, 12);
+            this.SettingsBox2.Name = "SettingsBox2";
+            this.SettingsBox2.Size = new System.Drawing.Size(203, 117);
+            this.SettingsBox2.TabIndex = 4;
+            this.SettingsBox2.TabStop = false;
+            this.SettingsBox2.Text = "Fuel";
             // 
             // fuelMode
             // 
@@ -206,6 +219,16 @@
             // rfpermbInput
             // 
             this.rfpermbInput.Location = new System.Drawing.Point(6, 19);
+            this.rfpermbInput.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.rfpermbInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.rfpermbInput.Name = "rfpermbInput";
             this.rfpermbInput.Size = new System.Drawing.Size(69, 20);
             this.rfpermbInput.TabIndex = 1;
@@ -228,6 +251,11 @@
             // expansionInput
             // 
             this.expansionInput.Location = new System.Drawing.Point(6, 19);
+            this.expansionInput.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.expansionInput.Name = "expansionInput";
             this.expansionInput.Size = new System.Drawing.Size(69, 20);
             this.expansionInput.TabIndex = 1;
@@ -239,40 +267,52 @@
             // 
             // runBTN
             // 
-            this.runBTN.Location = new System.Drawing.Point(362, 66);
+            this.runBTN.Location = new System.Drawing.Point(362, 64);
             this.runBTN.Name = "runBTN";
-            this.runBTN.Size = new System.Drawing.Size(104, 63);
+            this.runBTN.Size = new System.Drawing.Size(104, 30);
             this.runBTN.TabIndex = 5;
-            this.runBTN.Text = "Run!";
+            this.runBTN.Text = "This length only";
             this.runBTN.UseVisualStyleBackColor = true;
-            this.runBTN.Click += new System.EventHandler(this.runBTN_Click);
+            this.runBTN.Click += new System.EventHandler(this.Run);
             // 
             // output
             // 
-            this.output.Location = new System.Drawing.Point(13, 136);
+            this.output.Location = new System.Drawing.Point(13, 135);
             this.output.Multiline = true;
             this.output.Name = "output";
             this.output.ReadOnly = true;
             this.output.Size = new System.Drawing.Size(453, 223);
             this.output.TabIndex = 6;
             // 
+            // runAllBTN
+            // 
+            this.runAllBTN.Location = new System.Drawing.Point(362, 99);
+            this.runAllBTN.Name = "runAllBTN";
+            this.runAllBTN.Size = new System.Drawing.Size(104, 30);
+            this.runAllBTN.TabIndex = 7;
+            this.runAllBTN.Text = "All lengths up to";
+            this.runAllBTN.UseVisualStyleBackColor = true;
+            this.runAllBTN.Click += new System.EventHandler(this.RunAll);
+            // 
             // TurbineCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(478, 374);
+            this.Controls.Add(this.runAllBTN);
             this.Controls.Add(this.output);
             this.Controls.Add(this.runBTN);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.SettingsBox2);
+            this.Controls.Add(this.SettingsBox3);
+            this.Controls.Add(this.SettingsBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TurbineCalculator";
             this.Text = "Turbine Calculator";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.SettingsBox1.ResumeLayout(false);
+            this.SettingsBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.SettingsBox3.ResumeLayout(false);
+            this.SettingsBox2.ResumeLayout(false);
             this.fuelMode.ResumeLayout(false);
             this.autoMode.ResumeLayout(false);
             this.manualMode.ResumeLayout(false);
@@ -287,15 +327,15 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox SettingsBox1;
         private System.Windows.Forms.CheckBox sicCheck;
         private System.Windows.Forms.CheckBox extremeCheck;
         private System.Windows.Forms.CheckBox steelCheck;
         private System.Windows.Forms.CheckBox statorCheck;
         private System.Windows.Forms.NumericUpDown lengthInput;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox SettingsBox3;
         private System.Windows.Forms.ListBox fuelList;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox SettingsBox2;
         private System.Windows.Forms.TabControl fuelMode;
         private System.Windows.Forms.TabPage autoMode;
         private System.Windows.Forms.TabPage manualMode;
@@ -305,6 +345,8 @@
         private System.Windows.Forms.NumericUpDown expansionInput;
         private System.Windows.Forms.Button runBTN;
         private System.Windows.Forms.TextBox output;
+        private System.Windows.Forms.Button runAllBTN;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

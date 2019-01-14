@@ -1,0 +1,11 @@
+D:\Projetos\TurbineCalculator\Turbine Calculator\bin\Release\Turbine Calculator.exe.config
+D:\Projetos\TurbineCalculator\Turbine Calculator\bin\Release\Turbine Calculator.exe
+D:\Projetos\TurbineCalculator\Turbine Calculator\bin\Release\Turbine Calculator.pdb
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\Turbine_Calculator.TurbineCalculator.resources
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\Turbine_Calculator.Properties.Resources.resources
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\TurbineCalculator.csproj.GenerateResource.cache
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\TurbineCalculator.csproj.CoreCompileInputs.cache
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\Turbine Calculator.exe
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\Turbine Calculator.pdb
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\Turbine_Calculator.Overlay.resources
+D:\Projetos\TurbineCalculator\Turbine Calculator\obj\Release\TurbineCalculator.csprojAssemblyReference.cache
