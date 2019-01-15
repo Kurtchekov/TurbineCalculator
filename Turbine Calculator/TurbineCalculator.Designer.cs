@@ -126,6 +126,11 @@
             // lengthInput
             // 
             this.lengthInput.Location = new System.Drawing.Point(6, 19);
+            this.lengthInput.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
             this.lengthInput.Minimum = new decimal(new int[] {
             1,
             0,

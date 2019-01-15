@@ -1,0 +1,6 @@
+# VS
+*.vs
+*.suo
+*.cache
+Release/
+Debug/

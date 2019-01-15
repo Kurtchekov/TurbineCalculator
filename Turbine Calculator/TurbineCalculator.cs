@@ -15,6 +15,13 @@ namespace Turbine_Calculator {
             overlay.Abort_Clicked += new EventHandler(Abort);
             toolTip.SetToolTip(runBTN, "Retrieves the optimal turbine configuration for the chosen length");
             toolTip.SetToolTip(runAllBTN, "Retrieves the optimal turbine configuration amongst all lengths up to the chosen number. Can be pretty slow!!!");
+
+            currentBlades = new Blade[maxLength];
+            bestBlades = new Blade[maxLength];
+            targets = new double[maxLength];
+            currentCoefficients = new double[maxLength];
+            currentEfficiencySum = new double[maxLength];
+            rotors = new int[maxLength];
         }
 
         public static double fuelExpansion;
@@ -42,6 +49,7 @@ namespace Turbine_Calculator {
         public static CancellationTokenSource cancel;
         public static Overlay overlay;
         public static int bestLengthOfAll;
+        public static int maxLength = 24;
 
         private void Abort(object sender, EventArgs e) {
             if (cancel != null) cancel.Cancel();
@@ -81,7 +89,7 @@ namespace Turbine_Calculator {
             Setup();
             stopwatch.Reset();
             cancel = new CancellationTokenSource();
-            Task t = Task.Factory.StartNew(() => CalculateSingle(segments), cancel.Token).ContinueWith(task => DisplayResults(), TaskScheduler.FromCurrentSynchronizationContext());
+            Task t = Task.Factory.StartNew(() => Calculate(segments, false), cancel.Token).ContinueWith(task => DisplayResults(), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void RunAll(object sender, EventArgs e) {
@@ -90,9 +98,9 @@ namespace Turbine_Calculator {
             CancellationToken cancelToken = cancel.Token;
             Setup();
             stopwatch.Reset();
-            Task previousTask = Task.Factory.StartNew(() => CalculateSingle(1), cancelToken);
+            Task previousTask = Task.Factory.StartNew(() => Calculate(1, false), cancelToken);
             for (int length = 2; length <= segments; length++) {
-                previousTask = previousTask.ContinueWith((task,len) => CalculateNext((int)len), length, cancelToken);
+                previousTask = previousTask.ContinueWith((task,len) => Calculate((int)len, true), length, cancelToken);
             }
 
             previousTask.ContinueWith(task => DisplayResults(), TaskScheduler.FromCurrentSynchronizationContext());
@@ -145,55 +153,37 @@ namespace Turbine_Calculator {
                 (rotors[depth] + remainingSegments) > bestEfficiency;
         }
 
-        public void CalculateSingle(int length) {
-            ResetVariables(length);
-            stopwatch.Start();
-            RecursiveCheck(0, length);
-            stopwatch.Stop();
-        }
-
-        public void CalculateNext(int length) {
-            SoftResetVariables(length);
+        public void Calculate(int length, bool softReset) {
+            if (softReset) SoftResetVariables(length);
+            else ResetVariables(length);
             stopwatch.Start();
             RecursiveCheck(0, length);
             stopwatch.Stop();
         }
 
         public void SoftResetVariables(int length) {
-            targets = new double[length];
             for (int segment = 0; segment < length; segment++) {
                 targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / length));
             }
-            currentBlades = new Blade[length];
             for (int pos = 0; pos < length; pos++) currentBlades[pos] = blades[0];
-            Blade[] temp = new Blade[length];
-            for (int pos = 0; pos < bestBlades.Length; pos++) temp[pos] = bestBlades[pos];
-            bestBlades = temp;
-            currentCoefficients = new double[length];
-            currentEfficiencySum = new double[length];
-            rotors = new int[length];
         }
 
         public void ResetVariables(int length) {
+            SoftResetVariables(length);
             bestExpansion = 0;
             bestEfficiency = 0;
             bestLengthOfAll = 0;
-            targets = new double[length];
-            for (int segment = 0; segment < length; segment++) {
-                targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / length));
-            }
-            currentBlades = new Blade[length];
-            bestBlades = new Blade[length];
-            for (int pos = 0; pos < length; pos++)  bestBlades[pos] = currentBlades[pos] = blades[0];
-            currentCoefficients = new double[length];
-            currentEfficiencySum = new double[length];
-            rotors = new int[length];
+            for (int pos = 0; pos < length; pos++)  bestBlades[pos] = blades[0];
             bladesAvailable = blades.Count;
             bestPossibleEfficiency = 0;
             for (int blade = 0; blade < bladesAvailable; blade++) {
                 if (blades[blade].isStator) continue;
                 if (blades[blade].efficiency > bestPossibleEfficiency) bestPossibleEfficiency = blades[blade].efficiency;
             }
+        }
+
+        public static double Ratio(double a, double b) {
+            return Math.Min(a, b) / Math.Max(a, b);
         }
 
         public static void RecursiveCheck(int depth, int length) {
@@ -205,8 +195,7 @@ namespace Turbine_Calculator {
                 if (depth == 0) {
                     currentCoefficients[0] = actualBlade.coefficient;
                     if (!actualBlade.isStator) {
-                        currentEfficiencySum[0] = (Math.Min(currentCoefficients[0], targets[0]) /
-                            Math.Max(currentCoefficients[0], targets[0])) * actualBlade.efficiency;
+                        currentEfficiencySum[0] = Ratio(currentCoefficients[0], targets[0]) * actualBlade.efficiency;
                         rotors[0] = 1;
                     } else {
                         rotors[0] = 0;
@@ -216,9 +205,8 @@ namespace Turbine_Calculator {
                     currentCoefficients[depth] = currentCoefficients[depth - 1] * actualBlade.coefficient;
                     if (!actualBlade.isStator) {
                         if (targets[depth] < currentCoefficients[depth - 1]) continue;
-                        currentEfficiencySum[depth] = currentEfficiencySum[depth - 1] + (
-                        (Math.Min(currentCoefficients[depth], targets[depth]) /
-                        Math.Max(currentCoefficients[depth], targets[depth])) * actualBlade.efficiency);
+                        currentEfficiencySum[depth] = currentEfficiencySum[depth - 1] + 
+                            (Ratio(currentCoefficients[depth], targets[depth]) * actualBlade.efficiency);
                         rotors[depth] = rotors[depth - 1] + 1;
                     } else {
                         if (targets[depth] > currentCoefficients[depth - 1] &&
@@ -233,7 +221,7 @@ namespace Turbine_Calculator {
                 if (depth + 1 < length) RecursiveCheck(depth + 1, length);
                 else { //last segment
                     double averageEfficiency = currentEfficiencySum[depth] / rotors[depth];
-                    double expansionCoefficient = Math.Min(currentCoefficients[depth], fuelExpansion) / Math.Max(currentCoefficients[depth], fuelExpansion);
+                    double expansionCoefficient = Ratio(currentCoefficients[depth], fuelExpansion);
                     double finalEfficiency = averageEfficiency * expansionCoefficient;
                     if (finalEfficiency > bestEfficiency) {
                         bestEfficiency = finalEfficiency;
@@ -262,44 +250,6 @@ namespace Turbine_Calculator {
                 extremeCheck.Enabled = true;
                 sicCheck.Enabled = true;
             }
-        }
-    }
-
-    public struct Blade {
-
-        public int uid;
-        public string name;
-        public double coefficient;
-        public double efficiency;
-        public bool isStator;
-
-        /// <param name="u">A Unique IDentifier</param>
-        /// <param name="n">Human-friendly name</param>
-        /// <param name="c">Coefficient number</param>
-        /// <param name="f">Efficiency Number</param>
-        /// <param name="s">Is this an stator?</param>
-        public Blade(int u, string n, double c, double f, bool s) {
-            uid = u;
-            name = n;
-            coefficient = c;
-            efficiency = f;
-            isStator = s;
-        }
-
-        public static bool operator ==(Blade obj1, Blade obj2) {
-            return (obj1.uid == obj2.uid);
-        }
-
-        public static bool operator !=(Blade obj1, Blade obj2) {
-            return (obj1.uid != obj2.uid);
-        }
-
-        public override bool Equals(Object obj) {
-            return (obj is Blade) && ((Blade)obj).uid == uid;
-        }
-
-        public override int GetHashCode() {
-            return uid;
         }
     }
 }

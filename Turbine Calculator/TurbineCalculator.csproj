@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blade.cs" />
     <Compile Include="Overlay.cs">
       <SubType>UserControl</SubType>
     </Compile>
