@@ -16,10 +16,26 @@ namespace Turbine_Calculator {
             toolTip.SetToolTip(runBTN, "Retrieves the optimal turbine configuration for the chosen length");
             toolTip.SetToolTip(runAllBTN, "Retrieves the optimal turbine configuration amongst all lengths up to the chosen number. Can be pretty slow!!!");
 
+            blades.Add(stator);
+            blades.Add(steel);
+            blades.Add(extreme);
+            blades.Add(SiC);
+
+            usedList.DisplayMember = "name";
+            usedList.ValueMember = "uid";
+            usedList.DataSource = blades;
+            usedList.SelectedIndex = -1;
+            availableList.DisplayMember = "name";
+            availableList.ValueMember = "uid";
+            availableList.DataSource = availableBlades;
+            availableList.SelectedIndex = -1;
+
+
             currentBlades = new Blade[maxLength];
             bestBlades = new Blade[maxLength];
             targets = new double[maxLength];
             currentCoefficients = new double[maxLength];
+            currentCoefficientsBizarre = new double[maxLength];
             currentEfficiencySum = new double[maxLength];
             rotors = new int[maxLength];
         }
@@ -35,9 +51,10 @@ namespace Turbine_Calculator {
         public static Blade SiC = new Blade(3, "SiC", 1.8, 1.25, false);
 
         public static List<Blade> blades = new List<Blade>();
-
+        public static List<Blade> availableBlades = new List<Blade>();
         public static Blade[] currentBlades;
         public static double[] currentCoefficients;
+        public static double[] currentCoefficientsBizarre;
         public static double[] currentEfficiencySum;
         public static int[] rotors;
         public static Blade[] bestBlades;
@@ -117,6 +134,39 @@ namespace Turbine_Calculator {
             if (cancel.IsCancellationRequested) output.Text = "Operation Aborted!";
             else {
                 output.Text += "Best combination for fuel expansion " + fuelExpansion + " and " + bestLengthOfAll + " blocks long shaft:\r\n";
+
+                for (int segment = 0; segment < bestLengthOfAll; segment++) {
+                    targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / bestLengthOfAll));
+                }
+
+                /*output.Text += "Targets (I:R:E):\r\n";
+                for (int x = 0; x < bestLengthOfAll; x++) {
+                    if (x == 0) {
+                        currentCoefficients[x] = bestBlades[x].coefficient;
+                        if (bestBlades[x].isStator) {
+                            currentEfficiencySum[x] = 0;
+                            rotors[x] = 0;
+                        } else {
+                            currentEfficiencySum[x] = bestBlades[x].efficiency * Ratio(targets[x], currentCoefficients[x]);
+                            rotors[x] = 1;
+                        }
+                    } else {
+                        currentCoefficients[x] = currentCoefficients[x - 1] * bestBlades[x].coefficient;
+                        if (bestBlades[x].isStator) {
+                            currentEfficiencySum[x] = currentEfficiencySum[x - 1];
+                            rotors[x] = rotors[x - 1];
+                        } else {                            
+                            currentEfficiencySum[x] = currentEfficiencySum[x - 1] + bestBlades[x].efficiency * Ratio(targets[x], currentCoefficients[x]);
+                            rotors[x] = rotors[x - 1] + 1;
+                        }
+                    }
+
+                    //if (bestBlades[x].isStator) continue;
+                    output.Text += targets[x] + ":" + currentCoefficients[x] + ":" + currentEfficiencySum[x] + "\r\n";
+                }
+
+                output.Text += "Blade Multiplier:" + currentEfficiencySum[bestLengthOfAll - 1] / rotors[bestLengthOfAll - 1]+"\r\n";*/
+
                 string list = "";
                 for (int x = 0; x < bestLengthOfAll; x++) list += bestBlades[x].name + ", ";
                 list = list.Substring(0, list.Length - 2);
@@ -135,13 +185,13 @@ namespace Turbine_Calculator {
             for (int blade = 0; blade < bladesAvailable; blade++) {
                 Blade actualBlade = blades[blade];
                 if (actualBlade.isStator) continue;
-                double currentCoefficient = currentCoefficients[depth - 1] * actualBlade.coefficient;
-                double currentEfficiency = (Math.Min(currentCoefficient, targets[depth]) /
-                        Math.Max(currentCoefficient, targets[depth])) * actualBlade.efficiency;
+                double currentCoefficient = (currentCoefficients[depth - 1] + currentCoefficients[depth - 1] * actualBlade.coefficient) / 2;
+                double currentEfficiency = Ratio(currentCoefficient, targets[depth]) * actualBlade.efficiency;
                 if (bestCurrentEfficiency < currentEfficiency) bestCurrentEfficiency = currentEfficiency;
-                double laterCoefficient = currentCoefficients[depth - 1] * currentStator.coefficient * actualBlade.coefficient;
-                double laterEfficiency = (Math.Min(laterCoefficient, targets[depth + 1]) /
-                        Math.Max(laterCoefficient, targets[depth + 1])) * actualBlade.efficiency;
+                double laterCoefficient = 
+                    (currentCoefficients[depth - 1] * currentStator.coefficient + 
+                    currentCoefficients[depth - 1] * currentStator.coefficient * actualBlade.coefficient) / 2;
+                double laterEfficiency = Ratio(laterCoefficient, targets[depth + 1]) * actualBlade.efficiency;
                 if (bestLaterEfficiency < laterEfficiency) bestLaterEfficiency = laterEfficiency;
             }
             return bestLaterEfficiency > bestCurrentEfficiency;
@@ -194,8 +244,9 @@ namespace Turbine_Calculator {
 
                 if (depth == 0) {
                     currentCoefficients[0] = actualBlade.coefficient;
+                    currentCoefficientsBizarre[0] = (1 + currentCoefficients[0]) / 2;
                     if (!actualBlade.isStator) {
-                        currentEfficiencySum[0] = Ratio(currentCoefficients[0], targets[0]) * actualBlade.efficiency;
+                        currentEfficiencySum[0] = Ratio(currentCoefficientsBizarre[0], targets[0]) * actualBlade.efficiency;
                         rotors[0] = 1;
                     } else {
                         rotors[0] = 0;
@@ -203,14 +254,15 @@ namespace Turbine_Calculator {
                     }
                 } else {
                     currentCoefficients[depth] = currentCoefficients[depth - 1] * actualBlade.coefficient;
+                    currentCoefficientsBizarre[depth] = (currentCoefficients[depth - 1] + currentCoefficients[depth]) / 2;
                     if (!actualBlade.isStator) {
-                        if (targets[depth] < currentCoefficients[depth - 1]) continue;
+                        if (targets[depth] < currentCoefficientsBizarre[depth - 1]) continue;
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1] + 
-                            (Ratio(currentCoefficients[depth], targets[depth]) * actualBlade.efficiency);
+                            (Ratio(currentCoefficientsBizarre[depth], targets[depth]) * actualBlade.efficiency);
                         rotors[depth] = rotors[depth - 1] + 1;
                     } else {
-                        if (targets[depth] > currentCoefficients[depth - 1] &&
-                            depth + 1 < length) if (!IsExpansionHighEnough(depth, actualBlade)) continue;
+                        if (targets[depth] > currentCoefficientsBizarre[depth - 1] &&
+                            depth + 1 < length && !IsExpansionHighEnough(depth, actualBlade)) continue;
                         rotors[depth] = rotors[depth - 1];
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1];
                     }
@@ -225,7 +277,7 @@ namespace Turbine_Calculator {
                     double finalEfficiency = averageEfficiency * expansionCoefficient;
                     if (finalEfficiency > bestEfficiency) {
                         bestEfficiency = finalEfficiency;
-                        bestExpansion = expansionCoefficient;
+                        bestExpansion = currentCoefficients[depth] / fuelExpansion;
                         bestLengthOfAll = length;
                         for (int x = 0; x < length; x++) bestBlades[x] = currentBlades[x];
                     }
@@ -250,6 +302,46 @@ namespace Turbine_Calculator {
                 extremeCheck.Enabled = true;
                 sicCheck.Enabled = true;
             }
+        }
+
+        private void availableList_SelectedIndexChanged(object sender, EventArgs e) {
+            addBTN.Enabled = (availableList.SelectedIndex >= 0);
+        }
+
+        private void addBTN_Click(object sender, EventArgs e) {
+            Blade toAdd = (Blade)availableList.SelectedItem;
+            availableBlades.Remove(toAdd);
+            blades.Add(toAdd);
+            ((CurrencyManager)availableList.BindingContext[availableBlades]).Refresh();
+            ((CurrencyManager)usedList.BindingContext[blades]).Refresh();
+            availableList.SelectedIndex = -1;
+            usedList.SelectedIndex = -1;
+            addBTN.Enabled = false;
+        }
+
+        private void usedList_Enter(object sender, EventArgs e) {
+            availableList.SelectedIndex = -1;
+            addBTN.Enabled = false;
+        }
+
+        private void availableList_Enter(object sender, EventArgs e) {
+            usedList.SelectedIndex = -1;
+            removeBTN.Enabled = false;
+        }
+
+        private void removeBTN_Click(object sender, EventArgs e) {
+            Blade toRemove = (Blade)usedList.SelectedItem;
+            blades.Remove(toRemove);
+            availableBlades.Add(toRemove);
+            ((CurrencyManager)availableList.BindingContext[availableBlades]).Refresh();
+            ((CurrencyManager)usedList.BindingContext[blades]).Refresh();
+            availableList.SelectedIndex = -1;
+            usedList.SelectedIndex = -1;
+            removeBTN.Enabled = false;
+        }
+
+        private void usedList_SelectedIndexChanged(object sender, EventArgs e) {
+            removeBTN.Enabled = (usedList.SelectedIndex >= 0 && blades.Count > 1);
         }
     }
 }

@@ -45,6 +45,14 @@
             this.output = new System.Windows.Forms.TextBox();
             this.runAllBTN = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.availableList = new System.Windows.Forms.ListBox();
+            this.usedList = new System.Windows.Forms.ListBox();
+            this.addBTN = new System.Windows.Forms.Button();
+            this.removeBTN = new System.Windows.Forms.Button();
+            this.newBTN = new System.Windows.Forms.Button();
+            this.editBTN = new System.Windows.Forms.Button();
+            this.deleteBTN = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SettingsBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
             this.SettingsBox3.SuspendLayout();
@@ -56,6 +64,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.rfpermbInput)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // SettingsBox1
@@ -299,11 +308,101 @@
             this.runAllBTN.UseVisualStyleBackColor = true;
             this.runAllBTN.Click += new System.EventHandler(this.RunAll);
             // 
+            // availableList
+            // 
+            this.availableList.FormattingEnabled = true;
+            this.availableList.Location = new System.Drawing.Point(6, 0);
+            this.availableList.Name = "availableList";
+            this.availableList.Size = new System.Drawing.Size(75, 121);
+            this.availableList.TabIndex = 8;
+            this.availableList.SelectedIndexChanged += new System.EventHandler(this.availableList_SelectedIndexChanged);
+            this.availableList.Enter += new System.EventHandler(this.availableList_Enter);
+            // 
+            // usedList
+            // 
+            this.usedList.FormattingEnabled = true;
+            this.usedList.Location = new System.Drawing.Point(167, 0);
+            this.usedList.Name = "usedList";
+            this.usedList.Size = new System.Drawing.Size(75, 121);
+            this.usedList.TabIndex = 9;
+            this.usedList.SelectedIndexChanged += new System.EventHandler(this.usedList_SelectedIndexChanged);
+            this.usedList.Enter += new System.EventHandler(this.usedList_Enter);
+            // 
+            // addBTN
+            // 
+            this.addBTN.Enabled = false;
+            this.addBTN.Location = new System.Drawing.Point(87, 0);
+            this.addBTN.Name = "addBTN";
+            this.addBTN.Size = new System.Drawing.Size(75, 23);
+            this.addBTN.TabIndex = 10;
+            this.addBTN.Text = "Add ->";
+            this.addBTN.UseVisualStyleBackColor = true;
+            this.addBTN.Click += new System.EventHandler(this.addBTN_Click);
+            // 
+            // removeBTN
+            // 
+            this.removeBTN.Enabled = false;
+            this.removeBTN.Location = new System.Drawing.Point(87, 23);
+            this.removeBTN.Name = "removeBTN";
+            this.removeBTN.Size = new System.Drawing.Size(75, 23);
+            this.removeBTN.TabIndex = 11;
+            this.removeBTN.Text = "<- Remove";
+            this.removeBTN.UseVisualStyleBackColor = true;
+            this.removeBTN.Click += new System.EventHandler(this.removeBTN_Click);
+            // 
+            // newBTN
+            // 
+            this.newBTN.Enabled = false;
+            this.newBTN.Location = new System.Drawing.Point(87, 46);
+            this.newBTN.Name = "newBTN";
+            this.newBTN.Size = new System.Drawing.Size(75, 23);
+            this.newBTN.TabIndex = 12;
+            this.newBTN.Text = "New";
+            this.newBTN.UseVisualStyleBackColor = true;
+            // 
+            // editBTN
+            // 
+            this.editBTN.Enabled = false;
+            this.editBTN.Location = new System.Drawing.Point(87, 69);
+            this.editBTN.Name = "editBTN";
+            this.editBTN.Size = new System.Drawing.Size(75, 23);
+            this.editBTN.TabIndex = 13;
+            this.editBTN.Text = "Edit";
+            this.editBTN.UseVisualStyleBackColor = true;
+            // 
+            // deleteBTN
+            // 
+            this.deleteBTN.Enabled = false;
+            this.deleteBTN.Location = new System.Drawing.Point(87, 92);
+            this.deleteBTN.Name = "deleteBTN";
+            this.deleteBTN.Size = new System.Drawing.Size(75, 23);
+            this.deleteBTN.TabIndex = 14;
+            this.deleteBTN.Text = "Delete";
+            this.deleteBTN.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.availableList);
+            this.groupBox1.Controls.Add(this.deleteBTN);
+            this.groupBox1.Controls.Add(this.usedList);
+            this.groupBox1.Controls.Add(this.editBTN);
+            this.groupBox1.Controls.Add(this.addBTN);
+            this.groupBox1.Controls.Add(this.newBTN);
+            this.groupBox1.Controls.Add(this.removeBTN);
+            this.groupBox1.Location = new System.Drawing.Point(182, 204);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(248, 127);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Visible = false;
+            // 
             // TurbineCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(478, 374);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.runAllBTN);
             this.Controls.Add(this.output);
             this.Controls.Add(this.runBTN);
@@ -325,6 +424,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.rfpermbInput)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,6 +452,14 @@
         private System.Windows.Forms.TextBox output;
         private System.Windows.Forms.Button runAllBTN;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ListBox availableList;
+        private System.Windows.Forms.ListBox usedList;
+        private System.Windows.Forms.Button addBTN;
+        private System.Windows.Forms.Button removeBTN;
+        private System.Windows.Forms.Button newBTN;
+        private System.Windows.Forms.Button editBTN;
+        private System.Windows.Forms.Button deleteBTN;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
