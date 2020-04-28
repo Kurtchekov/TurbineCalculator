@@ -24,38 +24,44 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TurbineCalculator));
-            this.SettingsBox1 = new System.Windows.Forms.GroupBox();
-            this.sicCheck = new System.Windows.Forms.CheckBox();
-            this.extremeCheck = new System.Windows.Forms.CheckBox();
-            this.steelCheck = new System.Windows.Forms.CheckBox();
-            this.statorCheck = new System.Windows.Forms.CheckBox();
-            this.lengthInput = new System.Windows.Forms.NumericUpDown();
-            this.SettingsBox3 = new System.Windows.Forms.GroupBox();
-            this.fuelList = new System.Windows.Forms.ListBox();
+            this.bladesBox = new System.Windows.Forms.GroupBox();
+            this.deleteBTN = new System.Windows.Forms.Button();
+            this.editBTN = new System.Windows.Forms.Button();
+            this.addBTN = new System.Windows.Forms.Button();
+            this.newBTN = new System.Windows.Forms.Button();
+            this.removeBTN = new System.Windows.Forms.Button();
             this.SettingsBox2 = new System.Windows.Forms.GroupBox();
             this.fuelMode = new System.Windows.Forms.TabControl();
             this.autoMode = new System.Windows.Forms.TabPage();
+            this.fuelList = new System.Windows.Forms.ListBox();
             this.manualMode = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.rfpermbInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.expansionInput = new System.Windows.Forms.NumericUpDown();
-            this.runBTN = new System.Windows.Forms.Button();
-            this.output = new System.Windows.Forms.TextBox();
             this.runAllBTN = new System.Windows.Forms.Button();
+            this.SettingsBox3 = new System.Windows.Forms.GroupBox();
+            this.lengthInput = new System.Windows.Forms.NumericUpDown();
+            this.runBTN = new System.Windows.Forms.Button();
+            this.resultsList = new BrightIdeasSoftware.FastObjectListView();
+            this.posColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.targetColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.expansionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.bladeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.availableList = new System.Windows.Forms.ListBox();
-            this.usedList = new System.Windows.Forms.ListBox();
-            this.addBTN = new System.Windows.Forms.Button();
-            this.removeBTN = new System.Windows.Forms.Button();
-            this.newBTN = new System.Windows.Forms.Button();
-            this.editBTN = new System.Windows.Forms.Button();
-            this.deleteBTN = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.SettingsBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
-            this.SettingsBox3.SuspendLayout();
+            this.availableList = new BrightIdeasSoftware.DataListView();
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.usedList = new BrightIdeasSoftware.DataListView();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.output = new System.Windows.Forms.TextBox();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            this.bladesBox.SuspendLayout();
             this.SettingsBox2.SuspendLayout();
             this.fuelMode.SuspendLayout();
             this.autoMode.SuspendLayout();
@@ -64,123 +70,112 @@
             ((System.ComponentModel.ISupportInitialize)(this.rfpermbInput)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.SettingsBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.availableList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.usedList)).BeginInit();
             this.SuspendLayout();
             // 
-            // SettingsBox1
+            // splitContainer1
             // 
-            this.SettingsBox1.Controls.Add(this.sicCheck);
-            this.SettingsBox1.Controls.Add(this.extremeCheck);
-            this.SettingsBox1.Controls.Add(this.steelCheck);
-            this.SettingsBox1.Controls.Add(this.statorCheck);
-            this.SettingsBox1.Location = new System.Drawing.Point(13, 13);
-            this.SettingsBox1.Name = "SettingsBox1";
-            this.SettingsBox1.Size = new System.Drawing.Size(134, 116);
-            this.SettingsBox1.TabIndex = 0;
-            this.SettingsBox1.TabStop = false;
-            this.SettingsBox1.Text = "Blade Types to be used";
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            splitContainer1.IsSplitterFixed = true;
+            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // sicCheck
+            // splitContainer1.Panel1
             // 
-            this.sicCheck.AutoSize = true;
-            this.sicCheck.Checked = true;
-            this.sicCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.sicCheck.Location = new System.Drawing.Point(7, 89);
-            this.sicCheck.Name = "sicCheck";
-            this.sicCheck.Size = new System.Drawing.Size(71, 17);
-            this.sicCheck.TabIndex = 3;
-            this.sicCheck.Text = "SiC Rotor";
-            this.sicCheck.UseVisualStyleBackColor = true;
-            this.sicCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
+            splitContainer1.Panel1.Controls.Add(this.resultsList);
+            splitContainer1.Panel1.Controls.Add(this.bladesBox);
+            splitContainer1.Panel1.Controls.Add(this.SettingsBox2);
+            splitContainer1.Panel1.Controls.Add(this.runAllBTN);
+            splitContainer1.Panel1.Controls.Add(this.SettingsBox3);
+            splitContainer1.Panel1.Controls.Add(this.runBTN);
             // 
-            // extremeCheck
+            // splitContainer1.Panel2
             // 
-            this.extremeCheck.AutoSize = true;
-            this.extremeCheck.Checked = true;
-            this.extremeCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.extremeCheck.Location = new System.Drawing.Point(7, 66);
-            this.extremeCheck.Name = "extremeCheck";
-            this.extremeCheck.Size = new System.Drawing.Size(93, 17);
-            this.extremeCheck.TabIndex = 2;
-            this.extremeCheck.Text = "Extreme Rotor";
-            this.extremeCheck.UseVisualStyleBackColor = true;
-            this.extremeCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
+            splitContainer1.Panel2.Controls.Add(this.output);
+            splitContainer1.Size = new System.Drawing.Size(588, 430);
+            splitContainer1.SplitterDistance = 285;
+            splitContainer1.TabIndex = 17;
             // 
-            // steelCheck
+            // bladesBox
             // 
-            this.steelCheck.AutoSize = true;
-            this.steelCheck.Checked = true;
-            this.steelCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.steelCheck.Location = new System.Drawing.Point(7, 43);
-            this.steelCheck.Name = "steelCheck";
-            this.steelCheck.Size = new System.Drawing.Size(79, 17);
-            this.steelCheck.TabIndex = 1;
-            this.steelCheck.Text = "Steel Rotor";
-            this.steelCheck.UseVisualStyleBackColor = true;
-            this.steelCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
+            this.bladesBox.Controls.Add(this.usedList);
+            this.bladesBox.Controls.Add(this.availableList);
+            this.bladesBox.Controls.Add(this.deleteBTN);
+            this.bladesBox.Controls.Add(this.editBTN);
+            this.bladesBox.Controls.Add(this.addBTN);
+            this.bladesBox.Controls.Add(this.newBTN);
+            this.bladesBox.Controls.Add(this.removeBTN);
+            this.bladesBox.Location = new System.Drawing.Point(12, 139);
+            this.bladesBox.Name = "bladesBox";
+            this.bladesBox.Size = new System.Drawing.Size(313, 137);
+            this.bladesBox.TabIndex = 15;
+            this.bladesBox.TabStop = false;
+            this.bladesBox.Text = "Blades";
             // 
-            // statorCheck
+            // deleteBTN
             // 
-            this.statorCheck.AutoSize = true;
-            this.statorCheck.Checked = true;
-            this.statorCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.statorCheck.Location = new System.Drawing.Point(7, 20);
-            this.statorCheck.Name = "statorCheck";
-            this.statorCheck.Size = new System.Drawing.Size(54, 17);
-            this.statorCheck.TabIndex = 0;
-            this.statorCheck.Text = "Stator";
-            this.statorCheck.UseVisualStyleBackColor = true;
-            this.statorCheck.CheckedChanged += new System.EventHandler(this.CheckCheckboxes);
+            this.deleteBTN.Enabled = false;
+            this.deleteBTN.Location = new System.Drawing.Point(111, 108);
+            this.deleteBTN.Name = "deleteBTN";
+            this.deleteBTN.Size = new System.Drawing.Size(92, 23);
+            this.deleteBTN.TabIndex = 14;
+            this.deleteBTN.Text = "Delete";
+            this.deleteBTN.UseVisualStyleBackColor = true;
+            this.deleteBTN.Click += new System.EventHandler(this.deleteBTN_Click);
             // 
-            // lengthInput
+            // editBTN
             // 
-            this.lengthInput.Location = new System.Drawing.Point(6, 19);
-            this.lengthInput.Maximum = new decimal(new int[] {
-            24,
-            0,
-            0,
-            0});
-            this.lengthInput.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.lengthInput.Name = "lengthInput";
-            this.lengthInput.Size = new System.Drawing.Size(92, 20);
-            this.lengthInput.TabIndex = 1;
-            this.lengthInput.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.editBTN.Enabled = false;
+            this.editBTN.Location = new System.Drawing.Point(111, 85);
+            this.editBTN.Name = "editBTN";
+            this.editBTN.Size = new System.Drawing.Size(92, 23);
+            this.editBTN.TabIndex = 13;
+            this.editBTN.Text = "Edit";
+            this.editBTN.UseVisualStyleBackColor = true;
+            this.editBTN.Click += new System.EventHandler(this.editBTN_Click);
             // 
-            // SettingsBox3
+            // addBTN
             // 
-            this.SettingsBox3.Controls.Add(this.lengthInput);
-            this.SettingsBox3.Location = new System.Drawing.Point(362, 12);
-            this.SettingsBox3.Name = "SettingsBox3";
-            this.SettingsBox3.Size = new System.Drawing.Size(104, 48);
-            this.SettingsBox3.TabIndex = 2;
-            this.SettingsBox3.TabStop = false;
-            this.SettingsBox3.Text = "Shaft Length";
+            this.addBTN.Enabled = false;
+            this.addBTN.Location = new System.Drawing.Point(111, 16);
+            this.addBTN.Name = "addBTN";
+            this.addBTN.Size = new System.Drawing.Size(92, 23);
+            this.addBTN.TabIndex = 10;
+            this.addBTN.Text = "Add ->";
+            this.addBTN.UseVisualStyleBackColor = true;
+            this.addBTN.Click += new System.EventHandler(this.addBTN_Click);
             // 
-            // fuelList
+            // newBTN
             // 
-            this.fuelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.fuelList.FormattingEnabled = true;
-            this.fuelList.Items.AddRange(new object[] {
-            "High Pressure Steam",
-            "Low Pressure Steam",
-            "Steam"});
-            this.fuelList.Location = new System.Drawing.Point(3, 3);
-            this.fuelList.Name = "fuelList";
-            this.fuelList.Size = new System.Drawing.Size(177, 52);
-            this.fuelList.TabIndex = 3;
+            this.newBTN.Location = new System.Drawing.Point(111, 62);
+            this.newBTN.Name = "newBTN";
+            this.newBTN.Size = new System.Drawing.Size(92, 23);
+            this.newBTN.TabIndex = 12;
+            this.newBTN.Text = "New";
+            this.newBTN.UseVisualStyleBackColor = true;
+            this.newBTN.Click += new System.EventHandler(this.newBTN_Click);
+            // 
+            // removeBTN
+            // 
+            this.removeBTN.Enabled = false;
+            this.removeBTN.Location = new System.Drawing.Point(111, 39);
+            this.removeBTN.Name = "removeBTN";
+            this.removeBTN.Size = new System.Drawing.Size(92, 23);
+            this.removeBTN.TabIndex = 11;
+            this.removeBTN.Text = "<- Remove";
+            this.removeBTN.UseVisualStyleBackColor = true;
+            this.removeBTN.Click += new System.EventHandler(this.removeBTN_Click);
             // 
             // SettingsBox2
             // 
             this.SettingsBox2.Controls.Add(this.fuelMode);
-            this.SettingsBox2.Location = new System.Drawing.Point(153, 12);
+            this.SettingsBox2.Location = new System.Drawing.Point(12, 13);
             this.SettingsBox2.Name = "SettingsBox2";
             this.SettingsBox2.Size = new System.Drawing.Size(203, 117);
             this.SettingsBox2.TabIndex = 4;
@@ -207,6 +202,19 @@
             this.autoMode.TabIndex = 0;
             this.autoMode.Text = "Auto Mode";
             this.autoMode.UseVisualStyleBackColor = true;
+            // 
+            // fuelList
+            // 
+            this.fuelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.fuelList.FormattingEnabled = true;
+            this.fuelList.Items.AddRange(new object[] {
+            "High Pressure Steam",
+            "Low Pressure Steam",
+            "Steam"});
+            this.fuelList.Location = new System.Drawing.Point(3, 3);
+            this.fuelList.Name = "fuelList";
+            this.fuelList.Size = new System.Drawing.Size(177, 52);
+            this.fuelList.TabIndex = 3;
             // 
             // manualMode
             // 
@@ -279,28 +287,9 @@
             0,
             0});
             // 
-            // runBTN
-            // 
-            this.runBTN.Location = new System.Drawing.Point(362, 64);
-            this.runBTN.Name = "runBTN";
-            this.runBTN.Size = new System.Drawing.Size(104, 30);
-            this.runBTN.TabIndex = 5;
-            this.runBTN.Text = "This length only";
-            this.runBTN.UseVisualStyleBackColor = true;
-            this.runBTN.Click += new System.EventHandler(this.Run);
-            // 
-            // output
-            // 
-            this.output.Location = new System.Drawing.Point(13, 135);
-            this.output.Multiline = true;
-            this.output.Name = "output";
-            this.output.ReadOnly = true;
-            this.output.Size = new System.Drawing.Size(453, 223);
-            this.output.TabIndex = 6;
-            // 
             // runAllBTN
             // 
-            this.runAllBTN.Location = new System.Drawing.Point(362, 99);
+            this.runAllBTN.Location = new System.Drawing.Point(221, 103);
             this.runAllBTN.Name = "runAllBTN";
             this.runAllBTN.Size = new System.Drawing.Size(104, 30);
             this.runAllBTN.TabIndex = 7;
@@ -308,114 +297,172 @@
             this.runAllBTN.UseVisualStyleBackColor = true;
             this.runAllBTN.Click += new System.EventHandler(this.RunAll);
             // 
+            // SettingsBox3
+            // 
+            this.SettingsBox3.Controls.Add(this.lengthInput);
+            this.SettingsBox3.Location = new System.Drawing.Point(221, 13);
+            this.SettingsBox3.Name = "SettingsBox3";
+            this.SettingsBox3.Size = new System.Drawing.Size(104, 48);
+            this.SettingsBox3.TabIndex = 2;
+            this.SettingsBox3.TabStop = false;
+            this.SettingsBox3.Text = "Shaft Length";
+            // 
+            // lengthInput
+            // 
+            this.lengthInput.Location = new System.Drawing.Point(6, 19);
+            this.lengthInput.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+            this.lengthInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.lengthInput.Name = "lengthInput";
+            this.lengthInput.Size = new System.Drawing.Size(92, 20);
+            this.lengthInput.TabIndex = 1;
+            this.lengthInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // runBTN
+            // 
+            this.runBTN.Location = new System.Drawing.Point(221, 67);
+            this.runBTN.Name = "runBTN";
+            this.runBTN.Size = new System.Drawing.Size(104, 30);
+            this.runBTN.TabIndex = 5;
+            this.runBTN.Text = "This length only";
+            this.runBTN.UseVisualStyleBackColor = true;
+            this.runBTN.Click += new System.EventHandler(this.Run);
+            // 
+            // resultsList
+            // 
+            this.resultsList.AllColumns.Add(this.posColumn);
+            this.resultsList.AllColumns.Add(this.targetColumn);
+            this.resultsList.AllColumns.Add(this.expansionColumn);
+            this.resultsList.AllColumns.Add(this.bladeColumn);
+            this.resultsList.CellEditUseWholeCell = false;
+            this.resultsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.posColumn,
+            this.targetColumn,
+            this.expansionColumn,
+            this.bladeColumn});
+            this.resultsList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.resultsList.FullRowSelect = true;
+            this.resultsList.GridLines = true;
+            this.resultsList.HideSelection = false;
+            this.resultsList.Location = new System.Drawing.Point(331, 13);
+            this.resultsList.Name = "resultsList";
+            this.resultsList.ShowGroups = false;
+            this.resultsList.Size = new System.Drawing.Size(248, 263);
+            this.resultsList.TabIndex = 16;
+            this.resultsList.UseCompatibleStateImageBehavior = false;
+            this.resultsList.View = System.Windows.Forms.View.Details;
+            this.resultsList.VirtualMode = true;
+            // 
+            // posColumn
+            // 
+            this.posColumn.AspectName = "position";
+            this.posColumn.Text = "Position";
+            // 
+            // targetColumn
+            // 
+            this.targetColumn.AspectName = "target";
+            this.targetColumn.IsEditable = false;
+            this.targetColumn.Text = "Target";
+            // 
+            // expansionColumn
+            // 
+            this.expansionColumn.AspectName = "expansion";
+            this.expansionColumn.IsEditable = false;
+            this.expansionColumn.Text = "Expansion";
+            // 
+            // bladeColumn
+            // 
+            this.bladeColumn.AspectName = "blade";
+            this.bladeColumn.IsEditable = false;
+            this.bladeColumn.Text = "Blade";
+            // 
             // availableList
             // 
-            this.availableList.FormattingEnabled = true;
-            this.availableList.Location = new System.Drawing.Point(6, 0);
+            this.availableList.AllColumns.Add(this.olvColumn2);
+            this.availableList.CellEditUseWholeCell = false;
+            this.availableList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn2});
+            this.availableList.DataSource = null;
+            this.availableList.FullRowSelect = true;
+            this.availableList.GridLines = true;
+            this.availableList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.availableList.HideSelection = false;
+            this.availableList.Location = new System.Drawing.Point(7, 17);
             this.availableList.Name = "availableList";
-            this.availableList.Size = new System.Drawing.Size(75, 121);
-            this.availableList.TabIndex = 8;
+            this.availableList.Size = new System.Drawing.Size(98, 114);
+            this.availableList.TabIndex = 17;
+            this.availableList.UseCompatibleStateImageBehavior = false;
+            this.availableList.View = System.Windows.Forms.View.List;
             this.availableList.SelectedIndexChanged += new System.EventHandler(this.availableList_SelectedIndexChanged);
-            this.availableList.Enter += new System.EventHandler(this.availableList_Enter);
+            this.availableList.Leave += new System.EventHandler(this.availableList_Leave);
+            // 
+            // olvColumn2
+            // 
+            this.olvColumn2.AspectName = "name";
+            this.olvColumn2.Text = "Name";
             // 
             // usedList
             // 
-            this.usedList.FormattingEnabled = true;
-            this.usedList.Location = new System.Drawing.Point(167, 0);
+            this.usedList.AllColumns.Add(this.olvColumn1);
+            this.usedList.CellEditUseWholeCell = false;
+            this.usedList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn1});
+            this.usedList.DataSource = null;
+            this.usedList.FullRowSelect = true;
+            this.usedList.GridLines = true;
+            this.usedList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.usedList.HideSelection = false;
+            this.usedList.Location = new System.Drawing.Point(209, 17);
             this.usedList.Name = "usedList";
-            this.usedList.Size = new System.Drawing.Size(75, 121);
-            this.usedList.TabIndex = 9;
+            this.usedList.Size = new System.Drawing.Size(98, 114);
+            this.usedList.TabIndex = 18;
+            this.usedList.UseCompatibleStateImageBehavior = false;
+            this.usedList.View = System.Windows.Forms.View.List;
             this.usedList.SelectedIndexChanged += new System.EventHandler(this.usedList_SelectedIndexChanged);
-            this.usedList.Enter += new System.EventHandler(this.usedList_Enter);
+            this.usedList.Leave += new System.EventHandler(this.usedList_Leave);
             // 
-            // addBTN
+            // olvColumn1
             // 
-            this.addBTN.Enabled = false;
-            this.addBTN.Location = new System.Drawing.Point(87, 0);
-            this.addBTN.Name = "addBTN";
-            this.addBTN.Size = new System.Drawing.Size(75, 23);
-            this.addBTN.TabIndex = 10;
-            this.addBTN.Text = "Add ->";
-            this.addBTN.UseVisualStyleBackColor = true;
-            this.addBTN.Click += new System.EventHandler(this.addBTN_Click);
+            this.olvColumn1.AspectName = "name";
+            this.olvColumn1.Text = "Name";
             // 
-            // removeBTN
+            // output
             // 
-            this.removeBTN.Enabled = false;
-            this.removeBTN.Location = new System.Drawing.Point(87, 23);
-            this.removeBTN.Name = "removeBTN";
-            this.removeBTN.Size = new System.Drawing.Size(75, 23);
-            this.removeBTN.TabIndex = 11;
-            this.removeBTN.Text = "<- Remove";
-            this.removeBTN.UseVisualStyleBackColor = true;
-            this.removeBTN.Click += new System.EventHandler(this.removeBTN_Click);
-            // 
-            // newBTN
-            // 
-            this.newBTN.Enabled = false;
-            this.newBTN.Location = new System.Drawing.Point(87, 46);
-            this.newBTN.Name = "newBTN";
-            this.newBTN.Size = new System.Drawing.Size(75, 23);
-            this.newBTN.TabIndex = 12;
-            this.newBTN.Text = "New";
-            this.newBTN.UseVisualStyleBackColor = true;
-            // 
-            // editBTN
-            // 
-            this.editBTN.Enabled = false;
-            this.editBTN.Location = new System.Drawing.Point(87, 69);
-            this.editBTN.Name = "editBTN";
-            this.editBTN.Size = new System.Drawing.Size(75, 23);
-            this.editBTN.TabIndex = 13;
-            this.editBTN.Text = "Edit";
-            this.editBTN.UseVisualStyleBackColor = true;
-            // 
-            // deleteBTN
-            // 
-            this.deleteBTN.Enabled = false;
-            this.deleteBTN.Location = new System.Drawing.Point(87, 92);
-            this.deleteBTN.Name = "deleteBTN";
-            this.deleteBTN.Size = new System.Drawing.Size(75, 23);
-            this.deleteBTN.TabIndex = 14;
-            this.deleteBTN.Text = "Delete";
-            this.deleteBTN.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.availableList);
-            this.groupBox1.Controls.Add(this.deleteBTN);
-            this.groupBox1.Controls.Add(this.usedList);
-            this.groupBox1.Controls.Add(this.editBTN);
-            this.groupBox1.Controls.Add(this.addBTN);
-            this.groupBox1.Controls.Add(this.newBTN);
-            this.groupBox1.Controls.Add(this.removeBTN);
-            this.groupBox1.Location = new System.Drawing.Point(182, 204);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(248, 127);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
-            this.groupBox1.Visible = false;
+            this.output.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.output.Location = new System.Drawing.Point(0, 0);
+            this.output.Multiline = true;
+            this.output.Name = "output";
+            this.output.ReadOnly = true;
+            this.output.Size = new System.Drawing.Size(588, 141);
+            this.output.TabIndex = 6;
             // 
             // TurbineCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 374);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.runAllBTN);
-            this.Controls.Add(this.output);
-            this.Controls.Add(this.runBTN);
-            this.Controls.Add(this.SettingsBox2);
-            this.Controls.Add(this.SettingsBox3);
-            this.Controls.Add(this.SettingsBox1);
+            this.ClientSize = new System.Drawing.Size(588, 430);
+            this.Controls.Add(splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TurbineCalculator";
             this.Text = "Turbine Calculator";
-            this.SettingsBox1.ResumeLayout(false);
-            this.SettingsBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).EndInit();
-            this.SettingsBox3.ResumeLayout(false);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TurbineCalculator_FormClosing);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
+            splitContainer1.ResumeLayout(false);
+            this.bladesBox.ResumeLayout(false);
             this.SettingsBox2.ResumeLayout(false);
             this.fuelMode.ResumeLayout(false);
             this.autoMode.ResumeLayout(false);
@@ -424,19 +471,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.rfpermbInput)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).EndInit();
-            this.groupBox1.ResumeLayout(false);
+            this.SettingsBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.availableList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.usedList)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox SettingsBox1;
-        private System.Windows.Forms.CheckBox sicCheck;
-        private System.Windows.Forms.CheckBox extremeCheck;
-        private System.Windows.Forms.CheckBox steelCheck;
-        private System.Windows.Forms.CheckBox statorCheck;
         private System.Windows.Forms.NumericUpDown lengthInput;
         private System.Windows.Forms.GroupBox SettingsBox3;
         private System.Windows.Forms.ListBox fuelList;
@@ -449,17 +493,24 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.NumericUpDown expansionInput;
         private System.Windows.Forms.Button runBTN;
-        private System.Windows.Forms.TextBox output;
         private System.Windows.Forms.Button runAllBTN;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.ListBox availableList;
-        private System.Windows.Forms.ListBox usedList;
         private System.Windows.Forms.Button addBTN;
         private System.Windows.Forms.Button removeBTN;
         private System.Windows.Forms.Button newBTN;
         private System.Windows.Forms.Button editBTN;
         private System.Windows.Forms.Button deleteBTN;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox bladesBox;
+        private BrightIdeasSoftware.FastObjectListView resultsList;
+        public BrightIdeasSoftware.OLVColumn targetColumn;
+        public BrightIdeasSoftware.OLVColumn expansionColumn;
+        public BrightIdeasSoftware.OLVColumn bladeColumn;
+        public BrightIdeasSoftware.OLVColumn posColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn1;
+        private BrightIdeasSoftware.DataListView availableList;
+        private BrightIdeasSoftware.OLVColumn olvColumn2;
+        private BrightIdeasSoftware.DataListView usedList;
+        private System.Windows.Forms.TextBox output;
     }
 }
 

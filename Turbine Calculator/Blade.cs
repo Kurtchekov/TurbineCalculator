@@ -1,7 +1,9 @@
 ﻿using System;
 
 namespace Turbine_Calculator {
-    public struct Blade {
+    public class Blade {
+
+        private static int lastUID = 0;
 
         public int uid { set; get; }
         public string name { set; get; }
@@ -15,8 +17,8 @@ namespace Turbine_Calculator {
         /// <param name="c">Coefficient number</param>
         /// <param name="f">Efficiency Number</param>
         /// <param name="s">Is this an stator?</param>
-        public Blade(int u, string n, double c, double f, bool s, bool custom = false) {
-            uid = u;
+        public Blade(string n, double c, double f, bool s, bool custom = false) {
+            uid = lastUID++;
             name = n;
             coefficient = c;
             efficiency = f;
