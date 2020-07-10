@@ -26,7 +26,16 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.SplitContainer splitContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TurbineCalculator));
+            this.resultsList = new BrightIdeasSoftware.FastObjectListView();
+            this.posColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.targetColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.expansionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.bladeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.bladesBox = new System.Windows.Forms.GroupBox();
+            this.usedList = new BrightIdeasSoftware.DataListView();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.availableList = new BrightIdeasSoftware.DataListView();
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.deleteBTN = new System.Windows.Forms.Button();
             this.editBTN = new System.Windows.Forms.Button();
             this.addBTN = new System.Windows.Forms.Button();
@@ -45,23 +54,17 @@
             this.SettingsBox3 = new System.Windows.Forms.GroupBox();
             this.lengthInput = new System.Windows.Forms.NumericUpDown();
             this.runBTN = new System.Windows.Forms.Button();
-            this.resultsList = new BrightIdeasSoftware.FastObjectListView();
-            this.posColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.targetColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.expansionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.bladeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.availableList = new BrightIdeasSoftware.DataListView();
-            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.usedList = new BrightIdeasSoftware.DataListView();
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.output = new System.Windows.Forms.TextBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).BeginInit();
             this.bladesBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usedList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.availableList)).BeginInit();
             this.SettingsBox2.SuspendLayout();
             this.fuelMode.SuspendLayout();
             this.autoMode.SuspendLayout();
@@ -72,9 +75,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).BeginInit();
             this.SettingsBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.availableList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usedList)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -98,9 +98,60 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(this.output);
-            splitContainer1.Size = new System.Drawing.Size(588, 430);
+            splitContainer1.Size = new System.Drawing.Size(874, 430);
             splitContainer1.SplitterDistance = 285;
             splitContainer1.TabIndex = 17;
+            // 
+            // resultsList
+            // 
+            this.resultsList.AllColumns.Add(this.posColumn);
+            this.resultsList.AllColumns.Add(this.targetColumn);
+            this.resultsList.AllColumns.Add(this.expansionColumn);
+            this.resultsList.AllColumns.Add(this.bladeColumn);
+            this.resultsList.CellEditUseWholeCell = false;
+            this.resultsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.posColumn,
+            this.targetColumn,
+            this.expansionColumn,
+            this.bladeColumn});
+            this.resultsList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.resultsList.FullRowSelect = true;
+            this.resultsList.GridLines = true;
+            this.resultsList.HideSelection = false;
+            this.resultsList.Location = new System.Drawing.Point(331, 13);
+            this.resultsList.Name = "resultsList";
+            this.resultsList.ShowGroups = false;
+            this.resultsList.Size = new System.Drawing.Size(540, 263);
+            this.resultsList.TabIndex = 16;
+            this.resultsList.UseCompatibleStateImageBehavior = false;
+            this.resultsList.View = System.Windows.Forms.View.Details;
+            this.resultsList.VirtualMode = true;
+            // 
+            // posColumn
+            // 
+            this.posColumn.AspectName = "position";
+            this.posColumn.Text = "Position";
+            // 
+            // targetColumn
+            // 
+            this.targetColumn.AspectName = "target";
+            this.targetColumn.IsEditable = false;
+            this.targetColumn.Text = "Target";
+            this.targetColumn.Width = 161;
+            // 
+            // expansionColumn
+            // 
+            this.expansionColumn.AspectName = "expansion";
+            this.expansionColumn.IsEditable = false;
+            this.expansionColumn.Text = "Expansion";
+            this.expansionColumn.Width = 181;
+            // 
+            // bladeColumn
+            // 
+            this.bladeColumn.AspectName = "blade";
+            this.bladeColumn.IsEditable = false;
+            this.bladeColumn.Text = "Blade";
+            this.bladeColumn.Width = 104;
             // 
             // bladesBox
             // 
@@ -117,6 +168,56 @@
             this.bladesBox.TabIndex = 15;
             this.bladesBox.TabStop = false;
             this.bladesBox.Text = "Blades";
+            // 
+            // usedList
+            // 
+            this.usedList.AllColumns.Add(this.olvColumn1);
+            this.usedList.CellEditUseWholeCell = false;
+            this.usedList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn1});
+            this.usedList.DataSource = null;
+            this.usedList.FullRowSelect = true;
+            this.usedList.GridLines = true;
+            this.usedList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.usedList.HideSelection = false;
+            this.usedList.Location = new System.Drawing.Point(209, 17);
+            this.usedList.Name = "usedList";
+            this.usedList.Size = new System.Drawing.Size(98, 114);
+            this.usedList.TabIndex = 18;
+            this.usedList.UseCompatibleStateImageBehavior = false;
+            this.usedList.View = System.Windows.Forms.View.List;
+            this.usedList.SelectedIndexChanged += new System.EventHandler(this.usedList_SelectedIndexChanged);
+            this.usedList.Leave += new System.EventHandler(this.usedList_Leave);
+            // 
+            // olvColumn1
+            // 
+            this.olvColumn1.AspectName = "name";
+            this.olvColumn1.Text = "Name";
+            // 
+            // availableList
+            // 
+            this.availableList.AllColumns.Add(this.olvColumn2);
+            this.availableList.CellEditUseWholeCell = false;
+            this.availableList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn2});
+            this.availableList.DataSource = null;
+            this.availableList.FullRowSelect = true;
+            this.availableList.GridLines = true;
+            this.availableList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.availableList.HideSelection = false;
+            this.availableList.Location = new System.Drawing.Point(7, 17);
+            this.availableList.Name = "availableList";
+            this.availableList.Size = new System.Drawing.Size(98, 114);
+            this.availableList.TabIndex = 17;
+            this.availableList.UseCompatibleStateImageBehavior = false;
+            this.availableList.View = System.Windows.Forms.View.List;
+            this.availableList.SelectedIndexChanged += new System.EventHandler(this.availableList_SelectedIndexChanged);
+            this.availableList.Leave += new System.EventHandler(this.availableList_Leave);
+            // 
+            // olvColumn2
+            // 
+            this.olvColumn2.AspectName = "name";
+            this.olvColumn2.Text = "Name";
             // 
             // deleteBTN
             // 
@@ -339,104 +440,6 @@
             this.runBTN.UseVisualStyleBackColor = true;
             this.runBTN.Click += new System.EventHandler(this.Run);
             // 
-            // resultsList
-            // 
-            this.resultsList.AllColumns.Add(this.posColumn);
-            this.resultsList.AllColumns.Add(this.targetColumn);
-            this.resultsList.AllColumns.Add(this.expansionColumn);
-            this.resultsList.AllColumns.Add(this.bladeColumn);
-            this.resultsList.CellEditUseWholeCell = false;
-            this.resultsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.posColumn,
-            this.targetColumn,
-            this.expansionColumn,
-            this.bladeColumn});
-            this.resultsList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.resultsList.FullRowSelect = true;
-            this.resultsList.GridLines = true;
-            this.resultsList.HideSelection = false;
-            this.resultsList.Location = new System.Drawing.Point(331, 13);
-            this.resultsList.Name = "resultsList";
-            this.resultsList.ShowGroups = false;
-            this.resultsList.Size = new System.Drawing.Size(248, 263);
-            this.resultsList.TabIndex = 16;
-            this.resultsList.UseCompatibleStateImageBehavior = false;
-            this.resultsList.View = System.Windows.Forms.View.Details;
-            this.resultsList.VirtualMode = true;
-            // 
-            // posColumn
-            // 
-            this.posColumn.AspectName = "position";
-            this.posColumn.Text = "Position";
-            // 
-            // targetColumn
-            // 
-            this.targetColumn.AspectName = "target";
-            this.targetColumn.IsEditable = false;
-            this.targetColumn.Text = "Target";
-            // 
-            // expansionColumn
-            // 
-            this.expansionColumn.AspectName = "expansion";
-            this.expansionColumn.IsEditable = false;
-            this.expansionColumn.Text = "Expansion";
-            // 
-            // bladeColumn
-            // 
-            this.bladeColumn.AspectName = "blade";
-            this.bladeColumn.IsEditable = false;
-            this.bladeColumn.Text = "Blade";
-            // 
-            // availableList
-            // 
-            this.availableList.AllColumns.Add(this.olvColumn2);
-            this.availableList.CellEditUseWholeCell = false;
-            this.availableList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumn2});
-            this.availableList.DataSource = null;
-            this.availableList.FullRowSelect = true;
-            this.availableList.GridLines = true;
-            this.availableList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.availableList.HideSelection = false;
-            this.availableList.Location = new System.Drawing.Point(7, 17);
-            this.availableList.Name = "availableList";
-            this.availableList.Size = new System.Drawing.Size(98, 114);
-            this.availableList.TabIndex = 17;
-            this.availableList.UseCompatibleStateImageBehavior = false;
-            this.availableList.View = System.Windows.Forms.View.List;
-            this.availableList.SelectedIndexChanged += new System.EventHandler(this.availableList_SelectedIndexChanged);
-            this.availableList.Leave += new System.EventHandler(this.availableList_Leave);
-            // 
-            // olvColumn2
-            // 
-            this.olvColumn2.AspectName = "name";
-            this.olvColumn2.Text = "Name";
-            // 
-            // usedList
-            // 
-            this.usedList.AllColumns.Add(this.olvColumn1);
-            this.usedList.CellEditUseWholeCell = false;
-            this.usedList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumn1});
-            this.usedList.DataSource = null;
-            this.usedList.FullRowSelect = true;
-            this.usedList.GridLines = true;
-            this.usedList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.usedList.HideSelection = false;
-            this.usedList.Location = new System.Drawing.Point(209, 17);
-            this.usedList.Name = "usedList";
-            this.usedList.Size = new System.Drawing.Size(98, 114);
-            this.usedList.TabIndex = 18;
-            this.usedList.UseCompatibleStateImageBehavior = false;
-            this.usedList.View = System.Windows.Forms.View.List;
-            this.usedList.SelectedIndexChanged += new System.EventHandler(this.usedList_SelectedIndexChanged);
-            this.usedList.Leave += new System.EventHandler(this.usedList_Leave);
-            // 
-            // olvColumn1
-            // 
-            this.olvColumn1.AspectName = "name";
-            this.olvColumn1.Text = "Name";
-            // 
             // output
             // 
             this.output.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -444,14 +447,14 @@
             this.output.Multiline = true;
             this.output.Name = "output";
             this.output.ReadOnly = true;
-            this.output.Size = new System.Drawing.Size(588, 141);
+            this.output.Size = new System.Drawing.Size(874, 141);
             this.output.TabIndex = 6;
             // 
             // TurbineCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 430);
+            this.ClientSize = new System.Drawing.Size(874, 430);
             this.Controls.Add(splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TurbineCalculator";
@@ -462,7 +465,10 @@
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
             splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).EndInit();
             this.bladesBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.usedList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.availableList)).EndInit();
             this.SettingsBox2.ResumeLayout(false);
             this.fuelMode.ResumeLayout(false);
             this.autoMode.ResumeLayout(false);
@@ -473,9 +479,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).EndInit();
             this.SettingsBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.resultsList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.availableList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usedList)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -260,7 +260,7 @@ namespace Turbine_Calculator {
 
                 if (depth == 0) {
                     currentCoefficients[0] = actualBlade.coefficient;
-                    currentCoefficientsBizarre[0] = Average(1, currentCoefficients[0]);
+                    currentCoefficientsBizarre[0] = actualBlade.sqrtCoefficient;
                     if (!actualBlade.isStator) {
                         currentEfficiencySum[0] = Ratio(currentCoefficientsBizarre[0], targets[0]) * actualBlade.efficiency;
                         rotors[0] = 1;
@@ -270,7 +270,7 @@ namespace Turbine_Calculator {
                     }
                 } else {
                     currentCoefficients[depth] = currentCoefficients[depth - 1] * actualBlade.coefficient;
-                    currentCoefficientsBizarre[depth] = Average(currentCoefficients[depth - 1], currentCoefficients[depth]);
+                    currentCoefficientsBizarre[depth] = currentCoefficients[depth - 1] * actualBlade.sqrtCoefficient;
                     if (!actualBlade.isStator) {
                         if (targets[depth] < currentCoefficientsBizarre[depth - 1]) continue;
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1] + 

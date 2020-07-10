@@ -7,10 +7,18 @@ namespace Turbine_Calculator {
 
         public int uid { set; get; }
         public string name { set; get; }
-        public double coefficient { set; get; }
+        public double coefficient {
+            get { return internalCoefficient; }
+            set {
+                internalCoefficient = value;
+                sqrtCoefficient = Math.Sqrt(internalCoefficient);
+            }
+        }
         public double efficiency { set; get; }
         public bool isStator { set; get; }
         public bool isCustom { set; get; }
+        public double sqrtCoefficient;
+        double internalCoefficient;
 
         /// <param name="u">A Unique IDentifier</param>
         /// <param name="n">Human-friendly name</param>
