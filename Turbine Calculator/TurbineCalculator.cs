@@ -155,7 +155,7 @@ namespace Turbine_Calculator {
                 for (int x = 0; x < bestLengthOfAll; x++) {
                     if (x == 0) {
                         currentCoefficients[x] = bestBlades[x].coefficient;
-                        currentCoefficientsBizarre[x] = Average(1, currentCoefficients[x]);
+                        currentCoefficientsBizarre[0] = bestBlades[x].sqrtCoefficient; //Average(1, currentCoefficients[x]);
                         if (bestBlades[x].isStator) {
                             currentEfficiencySum[x] = 0;
                             rotors[x] = 0;
@@ -165,7 +165,7 @@ namespace Turbine_Calculator {
                         }
                     } else {
                         currentCoefficients[x] = currentCoefficients[x - 1] * bestBlades[x].coefficient;
-                        currentCoefficientsBizarre[x] = Average(currentCoefficients[x - 1], currentCoefficients[x]);
+                        currentCoefficientsBizarre[x] = currentCoefficients[x - 1] * bestBlades[x].sqrtCoefficient; //Average(currentCoefficients[x - 1], currentCoefficients[x]);
                         if (bestBlades[x].isStator) {
                             currentEfficiencySum[x] = currentEfficiencySum[x - 1];
                             rotors[x] = rotors[x - 1];
