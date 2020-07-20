@@ -151,7 +151,6 @@ namespace Turbine_Calculator {
                     targets[segment] = Math.Pow(fuelExpansion, ((segment + .5) / bestLengthOfAll));
                 }
 
-                //output.Text += "Targets (I:R:E):\r\n";
                 for (int x = 0; x < bestLengthOfAll; x++) {
                     if (x == 0) {
                         currentCoefficients[x] = bestBlades[x].coefficient;
@@ -160,7 +159,7 @@ namespace Turbine_Calculator {
                             currentEfficiencySum[x] = 0;
                             rotors[x] = 0;
                         } else {
-                            currentEfficiencySum[x] = bestBlades[x].efficiency * Ratio(targets[x], currentCoefficients[x]);
+                            currentEfficiencySum[x] = bestBlades[x].efficiency * Ratio(targets[x], currentCoefficientsBizarre[x]);
                             rotors[x] = 1;
                         }
                     } else {
@@ -170,17 +169,12 @@ namespace Turbine_Calculator {
                             currentEfficiencySum[x] = currentEfficiencySum[x - 1];
                             rotors[x] = rotors[x - 1];
                         } else {                            
-                            currentEfficiencySum[x] = currentEfficiencySum[x - 1] + bestBlades[x].efficiency * Ratio(targets[x], currentCoefficients[x]);
+                            currentEfficiencySum[x] = currentEfficiencySum[x - 1] + bestBlades[x].efficiency * Ratio(targets[x], currentCoefficientsBizarre[x]);
                             rotors[x] = rotors[x - 1] + 1;
                         }
                     }
-
-                    //if (bestBlades[x].isStator) continue;
-                    //output.Text += targets[x] + ":" + currentCoefficients[x] + ":" + currentEfficiencySum[x] + "\r\n";
                     resultsList.AddObject(new Result(x, targets[x], currentCoefficientsBizarre[x], bestBlades[x].name));
                 }
-
-                output.Text += "Blade Multiplier:" + currentEfficiencySum[bestLengthOfAll - 1] / rotors[bestLengthOfAll - 1]+"\r\n";
 
                 string list = "";
                 for (int x = 0; x < bestLengthOfAll; x++) list += bestBlades[x].name + ", ";
@@ -189,6 +183,7 @@ namespace Turbine_Calculator {
                 output.Text += (fuelExpansion * bestExpansion).ToString("P") +
                     " [" + fuelExpansion + " x " + bestExpansion.ToString("P") + "]\r\n";
                 output.Text += "RF per mb (coil efficiency not taken into account!): " + rfpermb * bestEfficiency + "\r\n";
+                output.Text += string.Format("Rotor Efficiency: {0}\r\n", (currentEfficiencySum[bestLengthOfAll - 1] / rotors[bestLengthOfAll - 1]).ToString("P"));
                 output.Text += "Time taken: " + stopwatch.ElapsedMilliseconds + " milliseconds\r\n";
             }
             EnableGUI(true);
