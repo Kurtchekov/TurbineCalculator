@@ -10,5 +10,6 @@ namespace Turbine_Calculator {
         public decimal rfpermb;
         public decimal expansion;
         public int selectedFuel;
+        public bool overhaulMode;
     }
 }

@@ -25,6 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.SplitContainer splitContainer1;
+            System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TurbineCalculator));
             this.resultsList = new BrightIdeasSoftware.FastObjectListView();
             this.posColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -56,7 +57,11 @@
             this.runBTN = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.preOverhaul = new System.Windows.Forms.RadioButton();
+            this.Overhaul = new System.Windows.Forms.RadioButton();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
+            label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -75,31 +80,30 @@
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).BeginInit();
             this.SettingsBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new System.Drawing.Point(0, 0);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(this.resultsList);
-            splitContainer1.Panel1.Controls.Add(this.bladesBox);
-            splitContainer1.Panel1.Controls.Add(this.SettingsBox2);
-            splitContainer1.Panel1.Controls.Add(this.runAllBTN);
-            splitContainer1.Panel1.Controls.Add(this.SettingsBox3);
-            splitContainer1.Panel1.Controls.Add(this.runBTN);
+            splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            splitContainer1.Panel1MinSize = 300;
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(this.output);
-            splitContainer1.Size = new System.Drawing.Size(874, 430);
-            splitContainer1.SplitterDistance = 285;
+            splitContainer1.Size = new System.Drawing.Size(860, 507);
+            splitContainer1.SplitterDistance = 300;
             splitContainer1.TabIndex = 17;
             // 
             // resultsList
@@ -115,13 +119,14 @@
             this.expansionColumn,
             this.bladeColumn});
             this.resultsList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.resultsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsList.FullRowSelect = true;
             this.resultsList.GridLines = true;
             this.resultsList.HideSelection = false;
-            this.resultsList.Location = new System.Drawing.Point(331, 13);
+            this.resultsList.Location = new System.Drawing.Point(0, 0);
             this.resultsList.Name = "resultsList";
             this.resultsList.ShowGroups = false;
-            this.resultsList.Size = new System.Drawing.Size(540, 263);
+            this.resultsList.Size = new System.Drawing.Size(521, 300);
             this.resultsList.TabIndex = 16;
             this.resultsList.UseCompatibleStateImageBehavior = false;
             this.resultsList.View = System.Windows.Forms.View.Details;
@@ -162,7 +167,7 @@
             this.bladesBox.Controls.Add(this.addBTN);
             this.bladesBox.Controls.Add(this.newBTN);
             this.bladesBox.Controls.Add(this.removeBTN);
-            this.bladesBox.Location = new System.Drawing.Point(12, 139);
+            this.bladesBox.Location = new System.Drawing.Point(12, 135);
             this.bladesBox.Name = "bladesBox";
             this.bladesBox.Size = new System.Drawing.Size(313, 137);
             this.bladesBox.TabIndex = 15;
@@ -276,7 +281,7 @@
             // SettingsBox2
             // 
             this.SettingsBox2.Controls.Add(this.fuelMode);
-            this.SettingsBox2.Location = new System.Drawing.Point(12, 13);
+            this.SettingsBox2.Location = new System.Drawing.Point(12, 12);
             this.SettingsBox2.Name = "SettingsBox2";
             this.SettingsBox2.Size = new System.Drawing.Size(203, 117);
             this.SettingsBox2.TabIndex = 4;
@@ -287,7 +292,7 @@
             // 
             this.fuelMode.Controls.Add(this.autoMode);
             this.fuelMode.Controls.Add(this.manualMode);
-            this.fuelMode.Location = new System.Drawing.Point(7, 19);
+            this.fuelMode.Location = new System.Drawing.Point(6, 19);
             this.fuelMode.Name = "fuelMode";
             this.fuelMode.SelectedIndex = 0;
             this.fuelMode.Size = new System.Drawing.Size(191, 88);
@@ -387,7 +392,7 @@
             // 
             // runAllBTN
             // 
-            this.runAllBTN.Location = new System.Drawing.Point(221, 103);
+            this.runAllBTN.Location = new System.Drawing.Point(221, 102);
             this.runAllBTN.Name = "runAllBTN";
             this.runAllBTN.Size = new System.Drawing.Size(104, 30);
             this.runAllBTN.TabIndex = 7;
@@ -398,7 +403,7 @@
             // SettingsBox3
             // 
             this.SettingsBox3.Controls.Add(this.lengthInput);
-            this.SettingsBox3.Location = new System.Drawing.Point(221, 13);
+            this.SettingsBox3.Location = new System.Drawing.Point(221, 12);
             this.SettingsBox3.Name = "SettingsBox3";
             this.SettingsBox3.Size = new System.Drawing.Size(104, 48);
             this.SettingsBox3.TabIndex = 2;
@@ -429,7 +434,7 @@
             // 
             // runBTN
             // 
-            this.runBTN.Location = new System.Drawing.Point(221, 67);
+            this.runBTN.Location = new System.Drawing.Point(221, 66);
             this.runBTN.Name = "runBTN";
             this.runBTN.Size = new System.Drawing.Size(104, 30);
             this.runBTN.TabIndex = 5;
@@ -444,14 +449,71 @@
             this.output.Multiline = true;
             this.output.Name = "output";
             this.output.ReadOnly = true;
-            this.output.Size = new System.Drawing.Size(874, 141);
+            this.output.Size = new System.Drawing.Size(860, 203);
             this.output.TabIndex = 6;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(label1);
+            this.splitContainer2.Panel1.Controls.Add(this.Overhaul);
+            this.splitContainer2.Panel1.Controls.Add(this.preOverhaul);
+            this.splitContainer2.Panel1.Controls.Add(this.SettingsBox2);
+            this.splitContainer2.Panel1.Controls.Add(this.runAllBTN);
+            this.splitContainer2.Panel1.Controls.Add(this.bladesBox);
+            this.splitContainer2.Panel1.Controls.Add(this.runBTN);
+            this.splitContainer2.Panel1.Controls.Add(this.SettingsBox3);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.resultsList);
+            this.splitContainer2.Size = new System.Drawing.Size(860, 300);
+            this.splitContainer2.SplitterDistance = 335;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // preOverhaul
+            // 
+            this.preOverhaul.AutoSize = true;
+            this.preOverhaul.Location = new System.Drawing.Point(135, 273);
+            this.preOverhaul.Name = "preOverhaul";
+            this.preOverhaul.Size = new System.Drawing.Size(87, 17);
+            this.preOverhaul.TabIndex = 16;
+            this.preOverhaul.Text = "Pre-Overhaul";
+            this.preOverhaul.UseVisualStyleBackColor = true;
+            // 
+            // Overhaul
+            // 
+            this.Overhaul.AutoSize = true;
+            this.Overhaul.Checked = true;
+            this.Overhaul.Location = new System.Drawing.Point(226, 273);
+            this.Overhaul.Name = "Overhaul";
+            this.Overhaul.Size = new System.Drawing.Size(68, 17);
+            this.Overhaul.TabIndex = 16;
+            this.Overhaul.TabStop = true;
+            this.Overhaul.Text = "Overhaul";
+            this.Overhaul.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(40, 275);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(89, 13);
+            label1.TabIndex = 17;
+            label1.Text = "Calculation Mode";
             // 
             // TurbineCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 430);
+            this.ClientSize = new System.Drawing.Size(860, 507);
             this.Controls.Add(splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TurbineCalculator";
@@ -476,6 +538,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.expansionInput)).EndInit();
             this.SettingsBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lengthInput)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -511,6 +578,9 @@
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.DataListView usedList;
         private System.Windows.Forms.TextBox output;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.RadioButton Overhaul;
+        private System.Windows.Forms.RadioButton preOverhaul;
     }
 }
 
