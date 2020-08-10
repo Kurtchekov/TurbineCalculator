@@ -341,14 +341,10 @@
             // 
             // rfpermbInput
             // 
+            this.rfpermbInput.DecimalPlaces = 2;
             this.rfpermbInput.Location = new System.Drawing.Point(6, 19);
             this.rfpermbInput.Maximum = new decimal(new int[] {
             10000,
-            0,
-            0,
-            0});
-            this.rfpermbInput.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
@@ -373,9 +369,10 @@
             // 
             // expansionInput
             // 
+            this.expansionInput.DecimalPlaces = 2;
             this.expansionInput.Location = new System.Drawing.Point(6, 19);
             this.expansionInput.Minimum = new decimal(new int[] {
-            2,
+            1,
             0,
             0,
             0});

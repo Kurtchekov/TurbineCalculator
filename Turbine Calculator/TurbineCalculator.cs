@@ -86,8 +86,8 @@ namespace Turbine_Calculator {
                     break;
                 }
             } else {
-                fuelExpansion = (int)expansionInput.Value;
-                rfpermb = (int)rfpermbInput.Value;
+                fuelExpansion = (double)expansionInput.Value;
+                rfpermb = (double)rfpermbInput.Value;
             }
             output.Text = "";
         }
