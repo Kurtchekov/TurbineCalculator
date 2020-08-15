@@ -232,7 +232,7 @@ namespace Turbine_Calculator {
             EnableGUI(true);
         }
 
-        public static bool IsExpansionHighEnough(int depth, Blade currentStator) {
+        public static bool IsExpansionHighEnoughPreOverhaul(int depth, Blade currentStator) {
             double bestCurrentEfficiency = 0;
             double bestLaterEfficiency = 0;
             for(int blade = 0; blade < blades.Count; blade++) {
@@ -245,6 +245,25 @@ namespace Turbine_Calculator {
                     bestCurrentEfficiency = currentEfficiency;
                 double laterCoefficient = Average(currentCoefficients[depth - 1] * currentStator.coefficient, currentCoefficients[depth - 1] * currentStator.coefficient * actualBlade.coefficient);
                 double laterEfficiency = Ratio(laterCoefficient, targets[depth + 1]) * actualBlade.efficiency;
+                if(bestLaterEfficiency < laterEfficiency)
+                    bestLaterEfficiency = laterEfficiency;
+            }
+            return bestLaterEfficiency > bestCurrentEfficiency;
+        }
+
+        public static bool IsExpansionHighEnough(int depth, Blade currentStator) {
+            double bestCurrentEfficiency = 0;
+            double bestLaterEfficiency = 0;
+            for(int blade = 0; blade < blades.Count; blade++) {
+                Blade actualBlade = blades[blade];
+                if(actualBlade.isStator)
+                    continue;
+                double currentCoefficientBizarre = Average(currentCoefficients[depth - 1], currentCoefficients[depth - 1] * actualBlade.sqrtCoefficient);
+                double currentEfficiency = Ratio(currentCoefficientBizarre, targets[depth]) * actualBlade.efficiency;
+                if(bestCurrentEfficiency < currentEfficiency)
+                    bestCurrentEfficiency = currentEfficiency;
+                double laterCoefficientBizarre = Average(currentCoefficients[depth - 1] * currentStator.coefficient, currentCoefficients[depth - 1] * currentStator.coefficient * actualBlade.sqrtCoefficient);
+                double laterEfficiency = Ratio(laterCoefficientBizarre, targets[depth + 1]) * actualBlade.efficiency;
                 if(bestLaterEfficiency < laterEfficiency)
                     bestLaterEfficiency = laterEfficiency;
             }
@@ -308,11 +327,12 @@ namespace Turbine_Calculator {
             for(int blade = 0; blade < blades.Count; blade++) {
                 Blade actualBlade = blades[blade];
                 currentBlades[depth] = actualBlade;
-
+                double actualCoefficient;
                 if(depth == 0) {
                     currentCoefficients[0] = actualBlade.coefficient;
+                    actualCoefficient = Average(1, currentCoefficients[0]);
                     if(!actualBlade.isStator) {
-                        currentEfficiencySum[0] = Ratio(currentCoefficients[0], targets[0]) * actualBlade.efficiency;
+                        currentEfficiencySum[0] = Ratio(actualCoefficient, targets[0]) * actualBlade.efficiency;
                         rotors[0] = 1;
                     } else {
                         rotors[0] = 0;
@@ -320,16 +340,17 @@ namespace Turbine_Calculator {
                     }
                 } else {
                     currentCoefficients[depth] = currentCoefficients[depth - 1] * actualBlade.coefficient;
+                    actualCoefficient = Average(currentCoefficients[depth], currentCoefficients[depth - 1]);
                     if(!actualBlade.isStator) {
                         if(targets[depth] < currentCoefficients[depth - 1])
                             continue;
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1] +
-                            (Ratio(currentCoefficients[depth], targets[depth]) * actualBlade.efficiency);
+                            (Ratio(actualCoefficient, targets[depth]) * actualBlade.efficiency);
                         rotors[depth] = rotors[depth - 1] + 1;
                     } else {
                         if(targets[depth] > currentCoefficients[depth - 1] &&
                             depth + 1 < length)
-                            if(!IsExpansionHighEnough(depth, actualBlade))
+                            if(!IsExpansionHighEnoughPreOverhaul(depth, actualBlade))
                                 continue;
                         rotors[depth] = rotors[depth - 1];
                         currentEfficiencySum[depth] = currentEfficiencySum[depth - 1];
